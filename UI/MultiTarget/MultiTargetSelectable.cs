@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Util.UI
+namespace Util.UI.MultiTarget
 {
     public class MultiTargetSelectable : Selectable
     {
