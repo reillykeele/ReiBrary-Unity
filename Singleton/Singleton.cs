@@ -2,27 +2,9 @@ using UnityEngine;
 
 namespace Util.Singleton
 {
-    public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class Singleton<T> : StaticInstance<T> where T : MonoBehaviour
     {
-        protected static T _instance;
-
-        public static T Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = FindObjectOfType<T>();
-
-                    if (_instance == null)
-                        _instance = new GameObject(typeof(T).ToString()).AddComponent<T>();
-                }
-
-                return _instance;
-            } 
-        }
-
-        protected virtual void Awake()
+        protected override void Awake()
         {
             if (Instance != null && Instance != this)
             {
@@ -32,6 +14,8 @@ namespace Util.Singleton
                     Destroy(gameObject);
                 return;
             }
+
+            base.Awake();
         }
     }
 }
