@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
-using UI;
 using UnityEngine;
+using Util.UI.Controller;
 
 namespace Util.Helpers
 {
@@ -37,7 +37,7 @@ namespace Util.Helpers
 
         public static IEnumerator FadeInAndEnable(UIController uiController, CanvasGroup canvasGroup, Action after = null)
         {
-            uiController.Enable();
+            // uiController.Enable();
             canvasGroup.alpha = 0f;
 
             while (canvasGroup.alpha < 1f)
@@ -62,7 +62,7 @@ namespace Util.Helpers
             }
 
             canvasGroup.alpha = 0f;
-            uiController.Disable();
+            // uiController.Disable();
 
             if (after != null) after();
         }
