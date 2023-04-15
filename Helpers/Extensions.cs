@@ -26,6 +26,9 @@ namespace Util.Helpers
             return GetChildTransform(gameObject.transform, name);
         }
 
+        public static void Enable(this Transform transform) => transform.gameObject.Enable();
+        public static void Disable(this Transform transform) => transform.gameObject.Disable();
+
         #endregion
         
         #region Monobehaviour
