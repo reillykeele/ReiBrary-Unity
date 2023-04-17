@@ -14,6 +14,7 @@ namespace Util.UI.Controllers
     [RequireComponent(typeof(CanvasGroup))]
     public class UIController : MonoBehaviour
     {
+        [Header("UI Controller")]
         public UIPage page;
         public UIPage returnPage;
 
