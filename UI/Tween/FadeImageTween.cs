@@ -1,9 +1,7 @@
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
-using Util.Enums;
 
-namespace UI.Tween
+namespace Util.UI.Tween
 {
     [RequireComponent(typeof(Image))]
     public class FadeImageTween : BaseTween

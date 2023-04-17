@@ -1,19 +1,18 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-namespace UI.ButtonControllers
+namespace Util.UI.Controllers.Selectables.Buttons
 {
-    [RequireComponent(typeof(Button))]
+    [RequireComponent(typeof(UnityEngine.UI.Button))]
     public abstract class AButtonController : ASelectableController
     {
-        protected Button _button;
+        protected UnityEngine.UI.Button _button;
 
         protected override void Awake()
         {
             base.Awake();
 
-            _button = GetComponent<Button>();
+            _button = GetComponent<UnityEngine.UI.Button>();
 
             _button.onClick.AddListener(OnClick);
         }

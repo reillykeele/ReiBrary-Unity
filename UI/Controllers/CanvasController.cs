@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using Util.Coroutine;
 
-namespace Util.UI.Controller
+namespace Util.UI.Controllers
 {
     public class CanvasController : MonoBehaviour
     {

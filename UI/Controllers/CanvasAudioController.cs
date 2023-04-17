@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class CanvasAudioController : MonoBehaviour
+namespace Util.UI.Controllers
 {
-    // TODO: Figure out how I want to generalize this
-    /*
+    public class CanvasAudioController : MonoBehaviour
+    {
+        // TODO: Figure out how I want to generalize this
+        /*
     private AudioSource _backgroundAudioSource;
     private AudioSource _uiAudioSource;
 
@@ -65,4 +67,5 @@ public class CanvasAudioController : MonoBehaviour
             StartCoroutine(AudioHelper.FadeOut(_backgroundAudioSource, 1f));
     }
     */
+    }
 }

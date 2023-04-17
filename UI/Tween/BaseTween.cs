@@ -1,7 +1,7 @@
 using UnityEngine;
 using Util.Enums;
 
-namespace UI.Tween
+namespace Util.UI.Tween
 {
     [RequireComponent(typeof(RectTransform))]
     public abstract class BaseTween : MonoBehaviour

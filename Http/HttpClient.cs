@@ -4,44 +4,47 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class HttpClient : MonoBehaviour
+namespace Util.Http
 {
-    public async Task<T> Get<T>(string uri)
+    public class HttpClient : MonoBehaviour
     {
-        var req = CreateRequest(uri, HttpMethod.Get);
-        return await SendRequest<T>(req);
-    }
-
-    public async Task<T> Post<T>(string uri, object payload)
-    {
-        var req = CreateRequest(uri, HttpMethod.Post, payload);
-        return await SendRequest<T>(req);
-    }
-
-
-    private UnityWebRequest CreateRequest(string uri, HttpMethod method, object data = null)
-    {
-        var req = new UnityWebRequest(uri, method.ToString());
-
-        if (data != null)
+        public async Task<T> Get<T>(string uri)
         {
-            var encodedData = Encoding.UTF8.GetBytes(JsonUtility.ToJson(data));
-            req.uploadHandler = new UploadHandlerRaw(encodedData);
+            var req = CreateRequest(uri, HttpMethod.Get);
+            return await SendRequest<T>(req);
         }
 
-        req.downloadHandler = new DownloadHandlerBuffer();
-        req.SetRequestHeader("Content-Type", "application/json");
+        public async Task<T> Post<T>(string uri, object payload)
+        {
+            var req = CreateRequest(uri, HttpMethod.Post, payload);
+            return await SendRequest<T>(req);
+        }
 
-        return req;
-    }
 
-    private async Task<T> SendRequest<T>(UnityWebRequest req)
-    {
-        req.SendWebRequest();
+        private UnityWebRequest CreateRequest(string uri, HttpMethod method, object data = null)
+        {
+            var req = new UnityWebRequest(uri, method.ToString());
 
-        while (req.isDone == false) await Task.Delay(10);
+            if (data != null)
+            {
+                var encodedData = Encoding.UTF8.GetBytes(JsonUtility.ToJson(data));
+                req.uploadHandler = new UploadHandlerRaw(encodedData);
+            }
 
-        return JsonUtility.FromJson<T>(req.downloadHandler.text);
-    }
+            req.downloadHandler = new DownloadHandlerBuffer();
+            req.SetRequestHeader("Content-Type", "application/json");
+
+            return req;
+        }
+
+        private async Task<T> SendRequest<T>(UnityWebRequest req)
+        {
+            req.SendWebRequest();
+
+            while (req.isDone == false) await Task.Delay(10);
+
+            return JsonUtility.FromJson<T>(req.downloadHandler.text);
+        }
     
+    }
 }

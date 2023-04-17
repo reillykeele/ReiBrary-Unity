@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UI.Tween
+namespace Util.UI.Tween
 {
     public class MoveTween : BaseTween
     {

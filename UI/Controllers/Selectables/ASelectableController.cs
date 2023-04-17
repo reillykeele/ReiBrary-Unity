@@ -1,22 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using Util.UI.Controller;
 
-namespace UI.ButtonControllers
+namespace Util.UI.Controllers.Selectables
 {
-    [RequireComponent(typeof(Selectable))]
+    [RequireComponent(typeof(UnityEngine.UI.Selectable))]
     public abstract class ASelectableController : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPointerExitHandler
     {
         protected CanvasController _canvasController;
         protected CanvasAudioController _canvasAudioController;
-        protected Selectable _selectable;
+        protected UnityEngine.UI.Selectable _selectable;
 
         protected virtual void Awake()
         {
             _canvasController = GetComponentInParent<CanvasController>();
             _canvasAudioController = GetComponentInParent<CanvasAudioController>();
-            _selectable = GetComponent<Selectable>();
+            _selectable = GetComponent<UnityEngine.UI.Selectable>();
         }
 
         public virtual void Select() => _selectable.Select();

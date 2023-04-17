@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UI.ButtonControllers;
-using UI.Tween;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Util.Helpers;
+using Util.UI.Controllers.Selectables;
+using Util.UI.Tween;
 
-namespace Util.UI.Controller
+namespace Util.UI.Controllers
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class UIController : MonoBehaviour
