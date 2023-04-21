@@ -2,36 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Util.Attributes;
 using Util.Coroutine;
+using Util.Enums;
+using Util.Input;
+using Util.Systems;
 
 namespace Util.UI.Controllers
 {
     public class CanvasController : MonoBehaviour
     {
-        public UIPage DefaultUiPage;
+        [Header("Input")] 
+        [SerializeField, Interface(typeof(IMenuInputReader))]
+        private ScriptableObject _menuInputReaderSO = default;
+        private IMenuInputReader _menuInputReader;
 
-        public float MinLoadingScreenTime = 0f;
+        [Header("Configuration")]
+        [SerializeField] protected UIPage _defaultUiPage;
+        [SerializeField, ReadOnly] protected UIPage _lastActiveUiPage;
+        [SerializeField] protected bool _setGameStateOnStart = true;
 
-        private List<UIController> uiControllers;
-        private Hashtable uiHashtable;
-
-        private UIPage _lastActiveUiPage;
+        protected List<UIController> uiControllers;
+        protected Hashtable uiHashtable;
 
         void Awake()
         {
+            _menuInputReader = (IMenuInputReader)_menuInputReaderSO;
+
             uiControllers = GetComponentsInChildren<UIController>().ToList();
             uiHashtable = new Hashtable();
 
             RegisterUIControllers(uiControllers);
         }
 
-        void Update()
+        void OnEnable()
         {
-            // TODO: Move this to the input reader event callback!
-            if (Keyboard.current?.escapeKey.wasPressedThisFrame == true ||
-                Gamepad.current?.buttonEast.wasPressedThisFrame == true)
-                ReturnToPrevious();
+            _menuInputReader.MenuCancelButtonEvent += ReturnToPrevious;
+        }
+
+        void OnDisable()
+        {
+
         }
 
         void Start()
@@ -39,7 +50,10 @@ namespace Util.UI.Controllers
             foreach (var controller in uiControllers)
                 controller.Disable();
 
-            EnableUI(DefaultUiPage);
+            EnableUI(_defaultUiPage);
+
+            if (_setGameStateOnStart == true)
+                GameSystem.Instance.ChangeGameState(GameState.Menu);
         }
 
         /// <summary>
@@ -116,17 +130,17 @@ namespace Util.UI.Controllers
                 ));
         }
 
-        private UIController GetUI(UIPage page) => (UIController) uiHashtable[page];
+        protected UIController GetUI(UIPage page) => (UIController) uiHashtable[page];
 
-        private void RegisterUIControllers(IEnumerable<UIController> controllers)
+        protected void RegisterUIControllers(IEnumerable<UIController> controllers)
         {
             foreach (var controller in controllers)
             {
-                if (DoesPageExist(controller.page) == false)
-                    uiHashtable.Add(controller.page, controller);
+                if (DoesPageExist(controller.Page) == false)
+                    uiHashtable.Add(controller.Page, controller);
             }
         }
 
-        private bool DoesPageExist(UIPage page) => uiHashtable.ContainsKey(page);
+        protected bool DoesPageExist(UIPage page) => uiHashtable.ContainsKey(page);
     }
 }

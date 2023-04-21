@@ -7,6 +7,7 @@ namespace Util.Helpers
 {
     public static class UIHelper
     {
+        // TODO: can probably remove this 
         public static IEnumerator FadeIn(CanvasGroup canvasGroup, Action after = null)
         {
             canvasGroup.alpha = 0f;
@@ -35,36 +36,32 @@ namespace Util.Helpers
             if (after != null) after();
         }
 
-        public static IEnumerator FadeInAndEnable(UIController uiController, CanvasGroup canvasGroup, Action after = null)
+        public static IEnumerator FadeInAndEnable(UIController uiController, CanvasGroup canvasGroup, float duration = 1f, Action after = null)
         {
-            // uiController.Enable();
             canvasGroup.alpha = 0f;
+            uiController.gameObject.Enable();
 
-            while (canvasGroup.alpha < 1f)
-            {
-                canvasGroup.alpha += 0.01f;
-                yield return null;
-            }
+            LeanTween.value(canvasGroup.gameObject, 0f, 1f, duration)
+                .setOnUpdate((a) => canvasGroup.alpha = a)
+                .setIgnoreTimeScale(true);
 
-            canvasGroup.alpha = 1f;
+            yield return new WaitForSecondsRealtime(duration);
 
-            if (after != null) after();
+            after?.Invoke();
         }
 
-        public static IEnumerator FadeOutAndDisable(UIController uiController, CanvasGroup canvasGroup, Action after = null)
+        public static IEnumerator FadeOutAndDisable(UIController uiController, CanvasGroup canvasGroup, float duration = 1f, Action after = null)
         {
             canvasGroup.alpha = 1f;
 
-            while (canvasGroup.alpha > 0f)
-            {
-                canvasGroup.alpha -= 0.01f;
-                yield return null;
-            }
+            LeanTween.value(canvasGroup.gameObject, 1f, 0f, duration)
+                .setOnUpdate((a) => canvasGroup.alpha = a)
+                .setIgnoreTimeScale(true);
 
-            canvasGroup.alpha = 0f;
-            // uiController.Disable();
+            yield return new WaitForSecondsRealtime(duration);
 
-            if (after != null) after();
+            uiController.gameObject.Disable();
+            after?.Invoke();
         }
     }
 }

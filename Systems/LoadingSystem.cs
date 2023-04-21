@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Util.Coroutine;
 using Util.Enums;
+using Util.GameEvents;
 using Util.Helpers;
 using Util.Singleton;
 using Util.UI.Controllers;
@@ -15,27 +16,48 @@ namespace Util.Systems
     /// </summary>
     public class LoadingSystem : Singleton<LoadingSystem>
     {
-        public bool IsLoading { get; private set; }
-
-        public float MinLoadingScreenTime = 0f;
-
-        private UIController _uiController;
-        private CanvasGroup _loadingCanvasGroup;
-
+        [Header("Loading Events")]
+        [SerializeField] private VoidGameEventSO _quitGameEvent = default; 
+        
         public UnityEvent OnSceneLoadedEvent = new UnityEvent();
         public UnityEvent OnLoadStartEvent = new UnityEvent();
         public UnityEvent OnLoadEndEvent = new UnityEvent();
+
+        [Header("Configuration")]
+        [SerializeField, Min(0f)] private float _minLoadingScreenTime = 0f;
+        [SerializeField, Min(0f)] private float _fadeInDuration = 0.5f;
+        [SerializeField, Min(0f)] private float _fadeOutDuration = 0.5f;
+
+        public bool IsLoading { get; private set; }
+
+        // Components
+        private LoadingCanvasController _loadingCanvas;
+        private UIController _uiController;
+        private CanvasGroup _loadingCanvasGroup;
 
         protected override void Awake()
         {
             base.Awake();
 
-            DontDestroyOnLoad(transform.root.gameObject);
+            SceneManager.LoadSceneAsync("Loading", LoadSceneMode.Additive).completed += (op) =>
+            {
+                _loadingCanvas = FindObjectOfType<LoadingCanvasController>();
+                
+                _uiController = _loadingCanvas.GetComponentInChildren<UIController>();
+                _loadingCanvasGroup = _loadingCanvas.GetComponentInChildren<CanvasGroup>();
 
-            _uiController = GetComponentInChildren<UIController>();
-            _loadingCanvasGroup = GetComponentInChildren<CanvasGroup>();
+                _uiController.Disable();
+            };
+        }
 
-            _uiController?.Disable();
+        void OnEnable()
+        {
+            _quitGameEvent.OnEventRaised += QuitGame;
+        }
+
+        void OnDisable()
+        {
+            _quitGameEvent.OnEventRaised -= QuitGame;
         }
 
         void Start()
@@ -46,7 +68,7 @@ namespace Util.Systems
         public void QuitGame()
         {
             StartCoroutine(CoroutineUtil.Sequence(
-                UIHelper.FadeInAndEnable(_uiController, _loadingCanvasGroup),
+                UIHelper.FadeInAndEnable(_uiController, _loadingCanvasGroup, _fadeInDuration),
                 CoroutineUtil.CallAction(() => GameSystem.Instance.Quit()))
             );
         }
@@ -118,13 +140,13 @@ namespace Util.Systems
                 GameSystem.Instance.ChangeGameState(GameState.Loading);
                 IsLoading = true;
                 OnLoadStartEvent.Invoke();
-                yield return UIHelper.FadeInAndEnable(_uiController, _loadingCanvasGroup);
+                yield return UIHelper.FadeInAndEnable(_uiController, _loadingCanvasGroup, _fadeInDuration);
             }
             else if (value == false)
             {
                 IsLoading = false;
                 OnLoadEndEvent.Invoke();
-                yield return UIHelper.FadeOutAndDisable(_uiController, _loadingCanvasGroup);
+                yield return UIHelper.FadeOutAndDisable(_uiController, _loadingCanvasGroup, _fadeOutDuration);
             }
         }
 
@@ -132,7 +154,7 @@ namespace Util.Systems
         {
             Time.timeScale = 1;
 
-            var minEndTime = Time.time + MinLoadingScreenTime;
+            var minEndTime = Time.time + _minLoadingScreenTime;
             var result = SceneManager.LoadSceneAsync(sceneName);
             result.completed += (op) => SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
 

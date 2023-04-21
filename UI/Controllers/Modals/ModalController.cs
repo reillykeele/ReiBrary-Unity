@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Util.Coroutine;
 using Util.Helpers;
+using Util.UI.Controllers;
 using Util.UI.Tween;
 
 namespace Util.UI.Modals
 {
-    public class ModalController : MonoBehaviour
+    public class ModalController : UIController
     {
         [Header("Modal Components")]
         [SerializeField] private TextMeshProUGUI _title;
@@ -23,13 +24,6 @@ namespace Util.UI.Modals
 
         private Action _yesAction;
         private Action _noAction;
-
-        private List<BaseTween> _tweens;
-
-        void Awake()
-        {
-            _tweens = GetComponents<BaseTween>().ToList();
-        }
 
         void OnEnable()
         {
@@ -43,9 +37,7 @@ namespace Util.UI.Modals
             _noButton.onClick.RemoveListener(OnNo);
         }
 
-        public void DisplayModal(string title, string description, Action yesAction = null, Action noAction = null
-
-            /*, string yesButtonText = "Yes", string noButtonText = "No"*/)
+        public void DisplayModal(string title, string description, Action yesAction = null, Action noAction = null, string yesButtonText = "Yes", string noButtonText = "No")
         {
             if (title.IsNullOrEmpty() == false)
                 _title.text = title;
@@ -70,12 +62,12 @@ namespace Util.UI.Modals
             _yesAction = yesAction;
             _noAction = noAction;
 
-            gameObject.Enable();
+            StartCoroutine(EnableCoroutine());
         }
 
         public void CloseModal()
         {
-            StartCoroutine(TweenOut());
+            StartCoroutine(DisableCoroutine());
         }
 
         private void OnYes()
@@ -90,31 +82,5 @@ namespace Util.UI.Modals
             CloseModal();
         }
 
-        private IEnumerator TweenIn()
-        {
-            foreach (var tween in _tweens)
-            {
-                if (tween.ShouldTweenInOnEnable() == false && tween.ShouldTweenIn())
-                    tween.TweenIn();
-                else
-                    tween.Reset();
-            }
-
-            yield break;
-        }
-
-        private IEnumerator TweenOut()
-        {
-            var transitionDuration = 0f;
-            foreach (var tween in _tweens.Where(x => x.gameObject.activeInHierarchy && x.ShouldTweenOut()))
-            {
-                transitionDuration = Mathf.Max(transitionDuration, tween.GetDurationOut());
-                tween.TweenOut();
-            }
-
-            yield return new WaitForSecondsRealtime(transitionDuration);
-
-            gameObject.Disable();
-        }
     }
 }

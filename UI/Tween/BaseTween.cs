@@ -7,19 +7,19 @@ namespace Util.UI.Tween
     public abstract class BaseTween : MonoBehaviour
     {
         [Header("Tween")]
-        [SerializeField] 
+        [SerializeField, Min(0f)] 
         [Tooltip("The length of tween animation.")]
         protected float _duration = 1f;
         
-        [SerializeField]
+        [SerializeField, Min(0f)]
         [Tooltip("The global delay for before tweening in and out.")]
         protected float _delay = 0f;
 
-        [SerializeField]
+        [SerializeField, Min(0f)]
         [Tooltip("The delay for before tweening in.")]
         protected float _delayIn = 0f;
 
-        [SerializeField]
+        [SerializeField, Min(0f)]
         [Tooltip("The delay for before tweening out.")]
         protected float _delayOut = 0f;
 
@@ -27,7 +27,7 @@ namespace Util.UI.Tween
         // [Tooltip("The delay for before tweening in.")]
         // protected float _delayIn = 0f;
 
-        [SerializeField]
+        [SerializeField, Min(0f)]
         [Tooltip("The delay after tweening out, before the next tween comes in.")]
         protected float _waitOut = 0f;
 
