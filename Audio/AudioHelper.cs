@@ -6,6 +6,10 @@ namespace Util.Audio
 {
     public static class AudioHelper
     {
+        public static float MixerVolumeToPercent(float mixerVolume) => Mathf.Pow(10, mixerVolume / 20);
+
+        public static float PercentToMixerVolume(float volume) => Mathf.Log10(volume) * 20f;
+
         public static IEnumerator FadeOut(AudioSource audioSource, float fadeTime, Action onStop = null)
         {
             var startVolume = audioSource.volume;

@@ -37,7 +37,7 @@ namespace Util.UI.Modals
             _noButton.onClick.RemoveListener(OnNo);
         }
 
-        public void DisplayModal(string title, string description, Action yesAction = null, Action noAction = null, string yesButtonText = "Yes", string noButtonText = "No")
+        public IEnumerator DisplayModal(string title, string description, Action yesAction = null, Action noAction = null, string yesButtonText = "Yes", string noButtonText = "No")
         {
             if (title.IsNullOrEmpty() == false)
                 _title.text = title;
@@ -62,12 +62,13 @@ namespace Util.UI.Modals
             _yesAction = yesAction;
             _noAction = noAction;
 
-            StartCoroutine(EnableCoroutine());
+            return EnableCoroutine();
         }
 
         public void CloseModal()
         {
             StartCoroutine(DisableCoroutine());
+
         }
 
         private void OnYes()

@@ -5,6 +5,8 @@ using Util.Attributes;
 using Util.Enums;
 using Util.Input;
 using Util.Singleton;
+using UnityEngine.Rendering;
+using Util.Audio;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -33,7 +35,7 @@ namespace Util.Systems
         public UnityEvent OnResumeGameEvent;
 
         // Audio
-        // TODO: Should this be elsewhere?
+        // TODO: Move this to audio system
         [Header("Audio")]
         public AudioMixer Mixer;
 
@@ -42,6 +44,18 @@ namespace Util.Systems
             base.Awake();
 
             _inputReader = (IInputReader) _inputReaderSO;
+        }
+
+        void Start()
+        {
+            // Load mixer group volumes from preferences
+            foreach (var mixerGroup in Mixer.FindMatchingGroups(""))
+            {
+                var mixerGroupProperty = $"{mixerGroup.name}Volume";
+                var prefVolume = PlayerPrefs.GetFloat(mixerGroupProperty, 1.0f);
+
+                Mixer.SetFloat(mixerGroupProperty, AudioHelper.PercentToMixerVolume(prefVolume));
+            }
         }
 
         public void ChangeGameState(GameState newGameState)
@@ -103,6 +117,36 @@ namespace Util.Systems
             #else
             Application.Quit(0);
             #endif
+        }
+
+        // TODO: Move this to audio system
+
+        /// <summary>
+        /// Returns the mixer group's volume.
+        /// </summary>
+        /// <param name="mixerGroup">The name of the mixer group.</param>
+        /// <returns>The volume percentage as a float between 0 and 1.</returns>
+        public float GetMixerVolume(string mixerGroup)
+        {
+            Mixer.GetFloat(mixerGroup, out var mixerVolume);
+            
+            var volume = AudioHelper.MixerVolumeToPercent(mixerVolume);
+
+            return volume;
+        }
+        
+        /// <summary>
+        /// Sets the mixer group's volume and saves it to player preferences.
+        /// </summary>
+        /// <param name="mixerGroup">The name of the mixer group.</param>
+        /// <param name="volume">The volume percentage as a float between 0 and 1.</param>
+        public void SetMixerVolume(string mixerGroup, float volume)
+        {
+            var mixerVolume = AudioHelper.PercentToMixerVolume(volume);
+            
+            Mixer.SetFloat(mixerGroup, mixerVolume);
+
+            PlayerPrefs.SetFloat($"{mixerGroup}", volume);
         }
     }
 }

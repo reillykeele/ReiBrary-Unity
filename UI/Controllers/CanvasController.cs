@@ -42,7 +42,7 @@ namespace Util.UI.Controllers
 
         void OnDisable()
         {
-
+            _menuInputReader.MenuCancelButtonEvent -= ReturnToPrevious;
         }
 
         void Start()

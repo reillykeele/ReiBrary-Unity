@@ -4,7 +4,7 @@
     {
         MasterVolume,
         MusicVolume,
-        SfxVolume,
-        UiVolume
+        SFXVolume,
+        UIVolume
     }
 }

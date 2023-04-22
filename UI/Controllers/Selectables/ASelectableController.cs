@@ -17,6 +17,17 @@ namespace Util.UI.Controllers.Selectables
             _selectable = GetComponent<UnityEngine.UI.Selectable>();
         }
 
+        protected virtual void OnEnable()
+        {
+            if (EventSystem.current?.currentSelectedGameObject == gameObject)
+                Select();
+        }
+
+        protected virtual void OnDisable()
+        {
+
+        }
+
         public virtual void Select() => _selectable.Select();
 
         public virtual void OnSelect(BaseEventData eventData) { }
