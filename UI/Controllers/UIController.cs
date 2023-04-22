@@ -6,7 +6,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Util.Attributes;
+using Util.Audio;
 using Util.Helpers;
+using Util.Systems;
 using Util.UI.Controllers.Selectables;
 using Util.UI.Tween;
 
@@ -21,7 +23,10 @@ namespace Util.UI.Controllers
 
         [SerializeField] public Selectable _initialSelected = null;
         [SerializeField, ReadOnly] protected Selectable _lastSelected = null;
-        
+
+        [Header("Audio")] 
+        [SerializeField] protected AudioSoundSO _returnToPreviousAudio;
+
         // Parent
         protected CanvasController _canvasController;
         protected CanvasAudioController _canvasAudioController;
@@ -121,7 +126,8 @@ namespace Util.UI.Controllers
         {
             if (ReturnPage != null)
             {
-                // _canvasAudioController.Play(CanvasAudioController.CanvasAudioSoundType.Back);
+                if (_returnToPreviousAudio != null)
+                    AudioSystem.Instance.PlayAudioSound(_returnToPreviousAudio);
                 _canvasController.SwitchUI(ReturnPage, resetTargetOnSwitch: false, transition: true);
             }
         }
