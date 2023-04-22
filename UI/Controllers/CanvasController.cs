@@ -19,20 +19,24 @@ namespace Util.UI.Controllers
 
         [Header("Configuration")]
         [SerializeField] protected UIPage _defaultUiPage;
-        [SerializeField, ReadOnly] protected UIPage _lastActiveUiPage;
         [SerializeField] protected bool _setGameStateOnStart = true;
 
-        protected List<UIController> uiControllers;
-        protected Hashtable uiHashtable;
+        [Header("Data")]
+        [SerializeField, ReadOnly] protected List<UIController> _uiControllers;
+        [SerializeField, ReadOnly] protected Hashtable _uiHashtable;
+        [SerializeField, ReadOnly] protected Stack<UIPage> _activeUiPages;
+
+        public UIPage ActivePage => _activeUiPages.TryPeek(out var page) ? page : null;
 
         void Awake()
         {
             _menuInputReader = (IMenuInputReader)_menuInputReaderSO;
 
-            uiControllers = GetComponentsInChildren<UIController>().ToList();
-            uiHashtable = new Hashtable();
+            _uiControllers = GetComponentsInChildren<UIController>().ToList();
+            _uiHashtable = new Hashtable();
+            _activeUiPages = new Stack<UIPage>(_uiControllers.Count);
 
-            RegisterUIControllers(uiControllers);
+            RegisterUIControllers(_uiControllers);
         }
 
         void OnEnable()
@@ -47,7 +51,7 @@ namespace Util.UI.Controllers
 
         void Start()
         {
-            foreach (var controller in uiControllers)
+            foreach (var controller in _uiControllers)
                 controller.Disable();
 
             EnableUI(_defaultUiPage);
@@ -59,7 +63,11 @@ namespace Util.UI.Controllers
         /// <summary>
         /// Returns to the previously active UI page.
         /// </summary>
-        public void ReturnToPrevious() => GetUI(_lastActiveUiPage)?.ReturnToUI();
+        public void ReturnToPrevious()
+        {
+            GetUI(ActivePage)?.ReturnToUI();
+            
+        }
 
         /// <summary>
         /// 
@@ -70,8 +78,9 @@ namespace Util.UI.Controllers
         {
             if (target == null) return;
 
+            _activeUiPages.Push(target);
+
             GetUI(target)?.Enable(resetOnSwitch);
-            _lastActiveUiPage = target;
         }
 
         /// <summary>
@@ -85,7 +94,8 @@ namespace Util.UI.Controllers
         {
             if (target == null) yield break;
 
-            _lastActiveUiPage = target;
+            _activeUiPages.Push(target);
+
             yield return GetUI(target)?.EnableCoroutine(resetOnSwitch, transition);
         }
 
@@ -98,6 +108,8 @@ namespace Util.UI.Controllers
             if (target == null) return;
 
             GetUI(target)?.Disable();
+            
+            _activeUiPages.Pop();
         }
 
         /// <summary>
@@ -111,6 +123,8 @@ namespace Util.UI.Controllers
             if (target == null) yield break;
 
             yield return GetUI(target)?.DisableCoroutine();
+
+            _activeUiPages.Pop();
         }
 
         /// <summary>
@@ -122,25 +136,60 @@ namespace Util.UI.Controllers
         /// <param name="transition">Whether tweens should be animated.</param>
         public void SwitchUI(UIPage target, bool resetCurrentOnSwitch = false, bool resetTargetOnSwitch = true, bool transition = true)
         {
-            if (_lastActiveUiPage == target) return;
+            if (ActivePage == target || GetUI(ActivePage)?.IsTransitioning == true)
+                return;
 
             StartCoroutine(CoroutineUtil.Sequence(
-                DisableUICoroutine(_lastActiveUiPage, resetCurrentOnSwitch),
+                DisableUICoroutine(ActivePage, resetCurrentOnSwitch),
                 EnableUICoroutine(target, resetTargetOnSwitch, transition)
                 ));
         }
 
-        protected UIController GetUI(UIPage page) => (UIController) uiHashtable[page];
+        /// <summary>
+        /// Disables the currently active UI and enables the <c>target</c> UI page. 
+        /// </summary>
+        /// <param name="target">The desired UI page to display.</param>
+        /// <param name="resetCurrentOnSwitch">Whether the current UI page should be reset.</param>
+        /// <param name="resetTargetOnSwitch">Whether the target UI page should be reset.</param>
+        /// <param name="transition">Whether tweens should be animated.</param>
+        public void DisplayUI(UIPage target, bool resetTargetOnSwitch = true, bool transition = true)
+        {
+            if (ActivePage == target || GetUI(ActivePage)?.IsTransitioning == true)
+                return;
+
+            GetUI(ActivePage)?.OnLoseFocus();
+
+            StartCoroutine(EnableUICoroutine(target, resetTargetOnSwitch, transition));
+        }
+
+        /// <summary>
+        /// Disables the currently active UI and enables the <c>target</c> UI page. 
+        /// </summary>
+        /// <param name="target">The desired UI page to display.</param>
+        /// <param name="resetCurrentOnSwitch">Whether the current UI page should be reset.</param>
+        public void HideUI(UIPage target, bool resetCurrentOnSwitch = false)
+        {
+            if (GetUI(target)?.IsTransitioning == true)
+                return;
+
+            StartCoroutine(
+                CoroutineUtil.Sequence(
+                    DisableUICoroutine(target, resetCurrentOnSwitch),
+                    CoroutineUtil.CallAction(() => GetUI(ActivePage)?.SetActive()))
+            );
+        }
+
+        public UIController GetUI(UIPage page) => page == null ? null : (UIController) _uiHashtable[page];
 
         protected void RegisterUIControllers(IEnumerable<UIController> controllers)
         {
             foreach (var controller in controllers)
             {
                 if (DoesPageExist(controller.Page) == false)
-                    uiHashtable.Add(controller.Page, controller);
+                    _uiHashtable.Add(controller.Page, controller);
             }
         }
 
-        protected bool DoesPageExist(UIPage page) => uiHashtable.ContainsKey(page);
+        protected bool DoesPageExist(UIPage page) => _uiHashtable.ContainsKey(page);
     }
 }

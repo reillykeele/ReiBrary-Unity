@@ -7,13 +7,13 @@ namespace Util.UI.Controllers.Selectables
     public abstract class ASelectableController : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler
     {
         protected CanvasController _canvasController;
-        protected CanvasAudioController _canvasAudioController;
+        protected UIController _uiController;
         protected UnityEngine.UI.Selectable _selectable;
 
         protected virtual void Awake()
         {
             _canvasController = GetComponentInParent<CanvasController>();
-            _canvasAudioController = GetComponentInParent<CanvasAudioController>();
+            _uiController = GetComponentInParent<UIController>();
             _selectable = GetComponent<UnityEngine.UI.Selectable>();
         }
 

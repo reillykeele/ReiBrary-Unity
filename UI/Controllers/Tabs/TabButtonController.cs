@@ -19,7 +19,7 @@ namespace Util.UI.Controllers.Tabs
             _tabIndex = tabIndex;
         }
 
-        public override void OnClick()
+        protected override void OnClick()
         {
             _tabController.SwitchTab(_tabIndex);
         }

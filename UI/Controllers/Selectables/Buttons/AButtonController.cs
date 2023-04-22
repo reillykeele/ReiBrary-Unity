@@ -14,13 +14,18 @@ namespace Util.UI.Controllers.Selectables.Buttons
 
             _button = GetComponent<UnityEngine.UI.Button>();
 
-            _button.onClick.AddListener(OnClick);
+            _button.onClick.AddListener(OnClickHandler);
         }
 
         public override void Select() => _button.Select();
 
         public override void OnSelect(BaseEventData eventData) { }
 
-        public virtual void OnClick() { }
+        private void OnClickHandler()
+        {
+            if (_uiController.IsFocused) OnClick();
+        }
+
+        protected virtual void OnClick() { }
     }
 }

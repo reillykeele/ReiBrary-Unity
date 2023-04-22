@@ -1,18 +1,15 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Util.Helpers;
 using Util.UI.Controllers;
-using Util.UI.Tween;
 
 namespace Util.UI.Modals
 {
-    public class ModalController : UIController
+    public class ModalUIController : UIController
     {
         [Header("Modal Components")]
         [SerializeField] private TextMeshProUGUI _title;
@@ -21,6 +18,9 @@ namespace Util.UI.Modals
         [SerializeField] private TextMeshProUGUI _yesButtonText;
         [SerializeField] private Button _noButton;
         [SerializeField] private TextMeshProUGUI _noButtonText;
+
+        [SerializeField] private UnityEvent _defaultYesEvent = new UnityEvent();
+        [SerializeField] private UnityEvent _defaultNoEvent = new UnityEvent();
 
         private Action _yesAction;
         private Action _noAction;
@@ -37,7 +37,7 @@ namespace Util.UI.Modals
             _noButton.onClick.RemoveListener(OnNo);
         }
 
-        public IEnumerator DisplayModal(string title, string description, Action yesAction = null, Action noAction = null, string yesButtonText = "Yes", string noButtonText = "No")
+        public void DisplayModal(string title, string description, Action yesAction = null, Action noAction = null, string yesButtonText = "Yes", string noButtonText = "No")
         {
             if (title.IsNullOrEmpty() == false)
                 _title.text = title;
@@ -48,7 +48,7 @@ namespace Util.UI.Modals
                 _description.text = description;
             else 
                 _description.gameObject.Disable();
-            
+
             // if (yesButtonText.IsNullOrEmpty() == false)
             //     _yesButtonText.text = yesButtonText;
             // else
@@ -59,29 +59,25 @@ namespace Util.UI.Modals
             // else 
             //     _noButton.gameObject.Disable();
 
-            _yesAction = yesAction;
-            _noAction = noAction;
+            _yesAction = yesAction ?? _defaultYesEvent.Invoke;
+            // _noAction = noAction ?? _defaultNoEvent.Invoke;
+            _noAction = _defaultNoEvent.Invoke;
 
-            return EnableCoroutine();
+            OpenModal();
         }
 
-        public void CloseModal()
-        {
-            StartCoroutine(DisableCoroutine());
+        public void OpenModal() => _canvasController.DisplayUI(Page);
 
-        }
+        public void CloseModal() => _canvasController.HideUI(Page);
 
-        private void OnYes()
-        {
-            _yesAction?.Invoke();
-            CloseModal();
-        }
+        // public override void ReturnToUI()
+        // {
+        //     if (IsFocused)
+        //         OnNo();
+        // }
 
-        private void OnNo()
-        {
-            _noAction?.Invoke();
-            CloseModal();
-        }
+        private void OnYes() => _yesAction?.Invoke();
+        private void OnNo() => _noAction?.Invoke();
 
     }
 }
