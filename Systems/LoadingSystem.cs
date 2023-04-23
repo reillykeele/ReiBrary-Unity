@@ -17,8 +17,9 @@ namespace Util.Systems
     public class LoadingSystem : Singleton<LoadingSystem>
     {
         [Header("Loading Events")]
-        [SerializeField] private VoidGameEventSO _quitGameEvent = default; 
-        
+        [SerializeField] private VoidGameEventSO _quitGameEvent = default;
+        [SerializeField] private StringGameEventSO _changeSceneEvent = default;
+
         public UnityEvent OnSceneLoadedEvent = new UnityEvent();
         public UnityEvent OnLoadStartEvent = new UnityEvent();
         public UnityEvent OnLoadEndEvent = new UnityEvent();
@@ -39,25 +40,24 @@ namespace Util.Systems
         {
             base.Awake();
 
-            SceneManager.LoadSceneAsync("Loading", LoadSceneMode.Additive).completed += (op) =>
-            {
-                _loadingCanvas = FindObjectOfType<LoadingCanvasController>();
-                
-                _uiController = _loadingCanvas.GetComponentInChildren<UIController>();
-                _loadingCanvasGroup = _loadingCanvas.GetComponentInChildren<CanvasGroup>();
-
-                _uiController.Disable();
-            };
+            _loadingCanvas = GetComponentInChildren<LoadingCanvasController>();
+            
+            _uiController = _loadingCanvas.GetComponentInChildren<UIController>();
+            _loadingCanvasGroup = _loadingCanvas.GetComponentInChildren<CanvasGroup>();
+            
+            _uiController.Disable();
         }
 
         void OnEnable()
         {
             _quitGameEvent.OnEventRaised += QuitGame;
+            _changeSceneEvent.OnEventRaised += LoadScene;
         }
 
         void OnDisable()
         {
             _quitGameEvent.OnEventRaised -= QuitGame;
+            _changeSceneEvent.OnEventRaised += LoadScene;
         }
 
         void Start()
@@ -130,7 +130,11 @@ namespace Util.Systems
                 SetLoading(true),
                 LoadingScreen(sceneName),
                 SetLoading(manuallyEndLoading),
-                CoroutineUtil.CallAction(() => OnSceneLoadedEvent.Invoke()));
+                CoroutineUtil.CallAction(() =>
+                {
+                    Debug.Log("ON SCENE LOADED");
+                    OnSceneLoadedEvent.Invoke();
+                }));
         }
 
         public IEnumerator SetLoading(bool value)
