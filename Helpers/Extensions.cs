@@ -143,6 +143,16 @@ namespace Util.Helpers
 
         #endregion
 
+        #region Vector3
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>A Vector3 of the vector's <c>x</c> and <c>z</c> values and a <c>y</c> of 0.</returns>
+        public static Vector3 GetHorizontal(this Vector3 v) => new Vector3(v.x, 0, v.z);
+
+        #endregion
+
         #region RectTransform
 
         public static float GetWidth(this RectTransform rt) =>
