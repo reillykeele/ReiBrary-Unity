@@ -5,6 +5,79 @@ namespace Util.Helpers
 {
     public static class DebugDrawHelper
     {
+        #region Sphere
+
+        public static void DrawPoint(Vector3 center, float radius, Color color, float duration = 0)
+        {
+            Debug.DrawRay(center, Vector3.up * radius, color, duration);
+            Debug.DrawRay(center, Vector3.down * radius, color, duration);
+            Debug.DrawRay(center, Vector3.left * radius, color, duration);
+            Debug.DrawRay(center, Vector3.right * radius, color, duration);
+            Debug.DrawRay(center, Vector3.forward * radius, color, duration);
+            Debug.DrawRay(center, Vector3.back * radius, color, duration);
+        }
+
+        /// <summary>
+        ///   Draw a wire sphere.
+        ///   Code by u/tratteo on Reddit.
+        /// </summary>
+        /// <param name="center"> </param>
+        /// <param name="radius"> </param>
+        /// <param name="color"> </param>
+        /// <param name="duration"> </param>
+        /// <param name="quality"> Define the quality of the wire sphere, from 1 to 10 </param>
+        public static void DrawSphere(Vector3 center, float radius, Color color, float duration = 0f, int quality = 3)
+        {
+            quality = Mathf.Clamp(quality, 1, 10);
+
+            var segments = quality << 2;
+            var subdivisions = quality << 3;
+            var halfSegments = segments >> 1;
+            var strideAngle = 360f / subdivisions;
+            var segmentStride = 180f / segments;
+
+            Vector3 first;
+            Vector3 next;
+            for (int i = 0; i < segments; i++)
+            {
+                first = (Vector3.forward * radius);
+                first = Quaternion.AngleAxis(segmentStride * (i - halfSegments), Vector3.right) * first;
+
+                for (int j = 0; j < subdivisions; j++)
+                {
+                    next = Quaternion.AngleAxis(strideAngle, Vector3.up) * first;
+                    Debug.DrawLine(first + center, next + center, color, duration);
+                    first = next;
+                }
+            }
+
+            Vector3 axis;
+            for (int i = 0; i < segments; i++)
+            {
+                first = (Vector3.forward * radius);
+                first = Quaternion.AngleAxis(segmentStride * (i - halfSegments), Vector3.up) * first;
+                axis = Quaternion.AngleAxis(90F, Vector3.up) * first;
+
+                for (int j = 0; j < subdivisions; j++)
+                {
+                    next = Quaternion.AngleAxis(strideAngle, axis) * first;
+                    Debug.DrawLine(first + center, next + center, color, duration);
+                    first = next;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Cube
+
+        public static void DrawCube(Vector3 center, float sideLength, Color color, float duration = 0)
+        {
+            DrawBox(center, new Vector3(sideLength/2, sideLength/2, sideLength/2), Quaternion.identity, color);
+        }
+
+        #endregion
+
         #region DrawBoxCast
         // By HiddenMonk source: http://answers.unity.com/answers/1156088/view.html 
 
@@ -32,6 +105,7 @@ namespace Util.Helpers
          {
              DrawBox(new Box(origin, halfExtents, orientation), color);
          }
+
          public static void DrawBox(Box box, Color color)
          {
              Debug.DrawLine(box.frontTopLeft,     box.frontTopRight,    color);
