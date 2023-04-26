@@ -1,92 +1,0 @@
-[1mdiff --git a/Helpers/DebugDrawHelper.cs b/Helpers/DebugDrawHelper.cs[m
-[1mindex eb454da..f81ad39 100644[m
-[1m--- a/Helpers/DebugDrawHelper.cs[m
-[1m+++ b/Helpers/DebugDrawHelper.cs[m
-[36m@@ -5,6 +5,79 @@[m [mnamespace Util.Helpers[m
- {[m
-     public static class DebugDrawHelper[m
-     {[m
-[32m+[m[32m        #region Sphere[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m        public static void DrawPoint(Vector3 center, float radius, Color color, float duration = 0)[m[41m[m
-[32m+[m[32m        {[m[41m[m
-[32m+[m[32m            Debug.DrawRay(center, Vector3.up * radius, color, duration);[m[41m[m
-[32m+[m[32m            Debug.DrawRay(center, Vector3.down * radius, color, duration);[m[41m[m
-[32m+[m[32m            Debug.DrawRay(center, Vector3.left * radius, color, duration);[m[41m[m
-[32m+[m[32m            Debug.DrawRay(center, Vector3.right * radius, color, duration);[m[41m[m
-[32m+[m[32m            Debug.DrawRay(center, Vector3.forward * radius, color, duration);[m[41m[m
-[32m+[m[32m            Debug.DrawRay(center, Vector3.back * radius, color, duration);[m[41m[m
-[32m+[m[32m        }[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m        /// <summary>[m[41m[m
-[32m+[m[32m        ///   Draw a wire sphere.[m[41m[m
-[32m+[m[32m        ///   Code by u/tratteo on Reddit.[m[41m[m
-[32m+[m[32m        /// </summary>[m[41m[m
-[32m+[m[32m        /// <param name="center"> </param>[m[41m[m
-[32m+[m[32m        /// <param name="radius"> </param>[m[41m[m
-[32m+[m[32m        /// <param name="color"> </param>[m[41m[m
-[32m+[m[32m        /// <param name="duration"> </param>[m[41m[m
-[32m+[m[32m        /// <param name="quality"> Define the quality of the wire sphere, from 1 to 10 </param>[m[41m[m
-[32m+[m[32m        public static void DrawSphere(Vector3 center, float radius, Color color, float duration = 0f, int quality = 3)[m[41m[m
-[32m+[m[32m        {[m[41m[m
-[32m+[m[32m            quality = Mathf.Clamp(quality, 1, 10);[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m            var segments = quality << 2;[m[41m[m
-[32m+[m[32m            var subdivisions = quality << 3;[m[41m[m
-[32m+[m[32m            var halfSegments = segments >> 1;[m[41m[m
-[32m+[m[32m            var strideAngle = 360f / subdivisions;[m[41m[m
-[32m+[m[32m            var segmentStride = 180f / segments;[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m            Vector3 first;[m[41m[m
-[32m+[m[32m            Vector3 next;[m[41m[m
-[32m+[m[32m            for (int i = 0; i < segments; i++)[m[41m[m
-[32m+[m[32m            {[m[41m[m
-[32m+[m[32m                first = (Vector3.forward * radius);[m[41m[m
-[32m+[m[32m                first = Quaternion.AngleAxis(segmentStride * (i - halfSegments), Vector3.right) * first;[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m                for (int j = 0; j < subdivisions; j++)[m[41m[m
-[32m+[m[32m                {[m[41m[m
-[32m+[m[32m                    next = Quaternion.AngleAxis(strideAngle, Vector3.up) * first;[m[41m[m
-[32m+[m[32m                    Debug.DrawLine(first + center, next + center, color, duration);[m[41m[m
-[32m+[m[32m                    first = next;[m[41m[m
-[32m+[m[32m                }[m[41m[m
-[32m+[m[32m            }[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m            Vector3 axis;[m[41m[m
-[32m+[m[32m            for (int i = 0; i < segments; i++)[m[41m[m
-[32m+[m[32m            {[m[41m[m
-[32m+[m[32m                first = (Vector3.forward * radius);[m[41m[m
-[32m+[m[32m                first = Quaternion.AngleAxis(segmentStride * (i - halfSegments), Vector3.up) * first;[m[41m[m
-[32m+[m[32m                axis = Quaternion.AngleAxis(90F, Vector3.up) * first;[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m                for (int j = 0; j < subdivisions; j++)[m[41m[m
-[32m+[m[32m                {[m[41m[m
-[32m+[m[32m                    next = Quaternion.AngleAxis(strideAngle, axis) * first;[m[41m[m
-[32m+[m[32m                    Debug.DrawLine(first + center, next + center, color, duration);[m[41m[m
-[32m+[m[32m                    first = next;[m[41m[m
-[32m+[m[32m                }[m[41m[m
-[32m+[m[32m            }[m[41m[m
-[32m+[m[32m        }[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m        #endregion[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m        #region Cube[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m        public static void DrawCube(Vector3 center, float sideLength, Color color, float duration = 0)[m[41m[m
-[32m+[m[32m        {[m[41m[m
-[32m+[m[32m            DrawBox(center, new Vector3(sideLength/2, sideLength/2, sideLength/2), Quaternion.identity, color);[m[41m[m
-[32m+[m[32m        }[m[41m[m
-[32m+[m[41m[m
-[32m+[m[32m        #endregion[m[41m[m
-[32m+[m[41m[m
-         #region DrawBoxCast[m
-         // By HiddenMonk source: http://answers.unity.com/answers/1156088/view.html [m
- [m
-[36m@@ -32,6 +105,7 @@[m [mnamespace Util.Helpers[m
-          {[m
-              DrawBox(new Box(origin, halfExtents, orientation), color);[m
-          }[m
-[32m+[m[41m[m
-          public static void DrawBox(Box box, Color color)[m
-          {[m
-              Debug.DrawLine(box.frontTopLeft,     box.frontTopRight,    color);[m
