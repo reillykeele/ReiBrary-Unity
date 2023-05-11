@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
+using Util.Extensions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Util.Helpers;
 using Util.UI.Controllers;
 
 namespace Util.UI.Modals

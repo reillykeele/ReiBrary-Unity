@@ -1,6 +1,6 @@
+using Util.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
-using Util.Helpers;
 using Util.UI.Controllers.Selectables.Buttons;
 
 namespace Util.UI.Controllers.Tabs
