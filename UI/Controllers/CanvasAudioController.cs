@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Util.UI.Controllers
+namespace ReiBrary.UI.Controllers
 {
     public class CanvasAudioController : MonoBehaviour
     {

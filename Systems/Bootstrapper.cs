@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Util.Systems
+namespace ReiBrary.Systems
 {
     public static class Bootstrapper
     {

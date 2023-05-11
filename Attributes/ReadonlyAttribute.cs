@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Util.Attributes
+namespace ReiBrary.Attributes
 {
     public class ReadOnlyAttribute : PropertyAttribute
     {

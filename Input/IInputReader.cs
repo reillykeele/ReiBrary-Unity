@@ -1,4 +1,4 @@
-﻿namespace Util.Input
+﻿namespace ReiBrary.Input
 {
     public interface IInputReader : IGameplayInputReader, IMenuInputReader
     {

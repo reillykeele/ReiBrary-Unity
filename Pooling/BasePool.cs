@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Util.Pooling
+namespace ReiBrary.Pooling
 {
     /// <summary>
     /// A base object pool wrapper providing generic event implementations.

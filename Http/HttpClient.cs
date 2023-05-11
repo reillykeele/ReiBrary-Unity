@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Util.Http
+namespace ReiBrary.Http
 {
     public class HttpClient : MonoBehaviour
     {

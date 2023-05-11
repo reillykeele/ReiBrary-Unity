@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Util.Helpers
+namespace ReiBrary.Helpers
 {
     public class DontDestroyOnLoadBehaviour : MonoBehaviour
     {

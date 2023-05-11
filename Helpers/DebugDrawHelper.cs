@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-namespace Util.Helpers
+namespace ReiBrary.Helpers
 {
     public static class DebugDrawHelper
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Util.UI.Controllers.Selectables.Buttons
+namespace ReiBrary.UI.Controllers.Selectables.Buttons
 {
     [RequireComponent(typeof(UnityEngine.UI.Button))]
     public abstract class AButtonController : ASelectableController

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Util.AddressableUtil
+namespace ReiBrary.AddressableUtil
 {
     public class AssetReferenceAudioClip : AssetReferenceT<AudioClip>
     {

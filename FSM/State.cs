@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Util.FSM
+namespace ReiBrary.FSM
 {
     [CreateAssetMenu(fileName = "States", menuName = "State Machine/State List")]
     public class StateListSO : ScriptableObject

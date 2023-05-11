@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Util.Extensions;
+using ReiBrary.Extensions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Util.Attributes;
-using Util.Audio;
-using Util.Systems;
-using Util.UI.Controllers.Selectables;
-using Util.UI.Tween;
+using ReiBrary.Attributes;
+using ReiBrary.Audio;
+using ReiBrary.Systems;
+using ReiBrary.UI.Controllers.Selectables;
+using ReiBrary.UI.Tween;
 
-namespace Util.UI.Controllers
+namespace ReiBrary.UI.Controllers
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class UIController : MonoBehaviour

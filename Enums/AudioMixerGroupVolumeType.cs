@@ -1,4 +1,4 @@
-﻿namespace Util.Enums
+﻿namespace ReiBrary.Enums
 {
     public enum AudioMixerGroupVolumeType
     {

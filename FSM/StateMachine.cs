@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace Util.FSM
+namespace ReiBrary.FSM
 {
     public class StateMachine : MonoBehaviour
     {

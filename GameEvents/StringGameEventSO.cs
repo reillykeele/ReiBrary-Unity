@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Util.GameEvents
+namespace ReiBrary.GameEvents
 {
     [CreateAssetMenu(fileName = "StringGameEvent", menuName = "Game Event/String Game Event")]
     public class StringGameEventSO : ScriptableObject

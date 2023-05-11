@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Util.Singleton
+namespace ReiBrary.Singleton
 {
     public abstract class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
     {

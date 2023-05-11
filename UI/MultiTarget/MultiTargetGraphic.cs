@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Util.UI.MultiTarget
+namespace ReiBrary.UI.MultiTarget
 {
     public class MultiTargetGraphic : MonoBehaviour
     {

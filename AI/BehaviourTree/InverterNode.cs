@@ -1,4 +1,4 @@
-﻿namespace Util.AI.BehaviourTree
+﻿namespace ReiBrary.AI.BehaviourTree
 {
     /// <summary>
     /// A decorator node representing an Inverter that inverts the result of its child node.

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Util.UI.Controllers.Selectables
+namespace ReiBrary.UI.Controllers.Selectables
 {
     [RequireComponent(typeof(UnityEngine.UI.Selectable))]
     public abstract class ASelectableController : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler

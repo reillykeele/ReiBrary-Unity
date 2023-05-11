@@ -1,6 +1,6 @@
-﻿using Util.Singleton;
+﻿using ReiBrary.Singleton;
 
-namespace Util.Systems
+namespace ReiBrary.Systems
 {
     public class SystemRoot : SingletonPersistent<SystemRoot>
     {

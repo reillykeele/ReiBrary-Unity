@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using Util.Attributes;
+using ReiBrary.Attributes;
 
-namespace Util.UI
+namespace ReiBrary.UI
 {
     [CreateAssetMenu(fileName = "Page", menuName = "UI/UI Page")]
     public class UIPage : ScriptableObject

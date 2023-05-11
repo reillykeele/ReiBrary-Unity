@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Util.Helpers
+namespace ReiBrary.Helpers
 {
     public static class MathHelper
     {

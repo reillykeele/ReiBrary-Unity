@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
-using Util.Extensions;
+using ReiBrary.Extensions;
 using UnityEngine;
-using Util.UI.Controllers;
+using ReiBrary.UI.Controllers;
 
-namespace Util.Helpers
+namespace ReiBrary.Helpers
 {
     public static class UIHelper
     {

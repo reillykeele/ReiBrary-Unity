@@ -1,8 +1,8 @@
 using UnityEditor;
 using UnityEngine;
-using Util.Attributes;
+using ReiBrary.Attributes;
 
-namespace Util.Editor
+namespace ReiBrary.Editor
 {
     [CustomPropertyDrawer(typeof(UniqueIdentifierAttribute))]
     public class UniqueIdentifierDrawer : PropertyDrawer

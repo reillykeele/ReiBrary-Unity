@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Util.Logging
+namespace ReiBrary.Logging
 {
     public class Logger
     {

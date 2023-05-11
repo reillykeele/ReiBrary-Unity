@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-namespace Util.Helpers
+namespace ReiBrary.Helpers
 {
     public static class PhysicsHelper
     {

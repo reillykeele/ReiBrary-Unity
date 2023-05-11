@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Object = UnityEngine.Object;
 
-namespace Util.Extensions
+namespace ReiBrary.Extensions
 {
     public static class Extensions
     {

@@ -1,10 +1,10 @@
 using UnityEngine;
-using Util.Data;
-using Util.Enums;
-using Util.Singleton;
-using Util.Systems;
+using ReiBrary.Data;
+using ReiBrary.Enums;
+using ReiBrary.Singleton;
+using ReiBrary.Systems;
 
-namespace Util.Managers
+namespace ReiBrary.Managers
 {
     public class CursorManager : Singleton<CursorManager>
     {

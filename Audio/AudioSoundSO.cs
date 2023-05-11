@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Util.Audio
+namespace ReiBrary.Audio
 {
     [CreateAssetMenu(fileName = "Sound", menuName = "Audio/Sound")]
     public class AudioSoundSO : ScriptableObject

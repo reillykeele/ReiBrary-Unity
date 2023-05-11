@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Util.Input
+namespace ReiBrary.Input
 {
     public interface IMenuInputReader
     {

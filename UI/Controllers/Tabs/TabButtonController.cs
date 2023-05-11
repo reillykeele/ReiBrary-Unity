@@ -1,9 +1,9 @@
-using Util.Extensions;
+using ReiBrary.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
-using Util.UI.Controllers.Selectables.Buttons;
+using ReiBrary.UI.Controllers.Selectables.Buttons;
 
-namespace Util.UI.Controllers.Tabs
+namespace ReiBrary.UI.Controllers.Tabs
 {
     [RequireComponent(typeof(Button))]
     public class TabButtonController : AButtonController

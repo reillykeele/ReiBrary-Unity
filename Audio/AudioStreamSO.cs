@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
-using Util.Attributes;
+using ReiBrary.Attributes;
 
-namespace Util.Audio
+namespace ReiBrary.Audio
 {
     [CreateAssetMenu(fileName = "Stream", menuName = "Audio/Stream")]
     public class AudioStreamSO : ScriptableObject

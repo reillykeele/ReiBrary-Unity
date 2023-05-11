@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Util.Attributes;
-using Util.Coroutine;
-using Util.Enums;
-using Util.Input;
-using Util.Systems;
+using ReiBrary.Attributes;
+using ReiBrary.Coroutine;
+using ReiBrary.Enums;
+using ReiBrary.Input;
+using ReiBrary.Systems;
 
-namespace Util.UI.Controllers
+namespace ReiBrary.UI.Controllers
 {
     public class CanvasController : MonoBehaviour
     {
@@ -139,7 +139,7 @@ namespace Util.UI.Controllers
             if (ActivePage == target || GetUI(ActivePage)?.IsTransitioning == true)
                 return;
 
-            StartCoroutine(CoroutineUtil.Sequence(
+            StartCoroutine(CoroutineReiBrary.Sequence(
                 DisableUICoroutine(ActivePage, resetCurrentOnSwitch),
                 EnableUICoroutine(target, resetTargetOnSwitch, transition)
                 ));
@@ -173,9 +173,9 @@ namespace Util.UI.Controllers
                 return;
 
             StartCoroutine(
-                CoroutineUtil.Sequence(
+                CoroutineReiBrary.Sequence(
                     DisableUICoroutine(target, resetCurrentOnSwitch),
-                    CoroutineUtil.CallAction(() => GetUI(ActivePage)?.SetActive()))
+                    CoroutineReiBrary.CallAction(() => GetUI(ActivePage)?.SetActive()))
             );
         }
 

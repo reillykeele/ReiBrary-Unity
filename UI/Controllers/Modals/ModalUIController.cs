@@ -1,12 +1,12 @@
 using System;
-using Util.Extensions;
+using ReiBrary.Extensions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Util.UI.Controllers;
+using ReiBrary.UI.Controllers;
 
-namespace Util.UI.Modals
+namespace ReiBrary.UI.Modals
 {
     public class ModalUIController : UIController
     {

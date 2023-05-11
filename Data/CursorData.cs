@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using Util.Enums;
+using ReiBrary.Enums;
 
-namespace Util.Data
+namespace ReiBrary.Data
 {
     [CreateAssetMenu(fileName = "CursorData", menuName = "Configuration/Cursor Data")]
     public class CursorData : UnityEngine.ScriptableObject

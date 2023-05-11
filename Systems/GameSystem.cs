@@ -1,18 +1,18 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
-using Util.Attributes;
-using Util.Enums;
-using Util.Input;
-using Util.Singleton;
+using ReiBrary.Attributes;
+using ReiBrary.Enums;
+using ReiBrary.Input;
+using ReiBrary.Singleton;
 using UnityEngine.Rendering;
-using Util.Audio;
+using ReiBrary.Audio;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace Util.Systems
+namespace ReiBrary.Systems
 {
     /// <summary>
     /// Controls the flow of the game's system and the application's state.

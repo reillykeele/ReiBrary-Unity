@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Util.AI.BehaviourTree
+namespace ReiBrary.AI.BehaviourTree
 {
     /// <summary>
     /// A control flow node representing a Selector.

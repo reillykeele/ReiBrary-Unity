@@ -2,14 +2,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using Util.Coroutine;
-using Util.Enums;
-using Util.GameEvents;
-using Util.Helpers;
-using Util.Singleton;
-using Util.UI.Controllers;
+using ReiBrary.Coroutine;
+using ReiBrary.Enums;
+using ReiBrary.GameEvents;
+using ReiBrary.Helpers;
+using ReiBrary.Singleton;
+using ReiBrary.UI.Controllers;
 
-namespace Util.Systems
+namespace ReiBrary.Systems
 {
     /// <summary>
     /// Handles smoothly loading and transitioning between scenes.
@@ -67,9 +67,9 @@ namespace Util.Systems
 
         public void QuitGame()
         {
-            StartCoroutine(CoroutineUtil.Sequence(
+            StartCoroutine(CoroutineReiBrary.Sequence(
                 UIHelper.FadeInAndEnable(_uiController, _loadingCanvasGroup, _fadeInDuration),
-                CoroutineUtil.CallAction(() => GameSystem.Instance.Quit()))
+                CoroutineReiBrary.CallAction(() => GameSystem.Instance.Quit()))
             );
         }
 
@@ -126,11 +126,11 @@ namespace Util.Systems
         /// <returns></returns>
         public IEnumerator LoadSceneCoroutine(string sceneName, bool manuallyEndLoading = false)
         {
-            return CoroutineUtil.Sequence(
+            return CoroutineReiBrary.Sequence(
                 SetLoading(true),
                 LoadingScreen(sceneName),
                 SetLoading(manuallyEndLoading),
-                CoroutineUtil.CallAction(() =>
+                CoroutineReiBrary.CallAction(() =>
                 {
                     Debug.Log("ON SCENE LOADED");
                     OnSceneLoadedEvent.Invoke();

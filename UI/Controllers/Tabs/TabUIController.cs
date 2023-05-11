@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace Util.UI.Controllers.Tabs
+namespace ReiBrary.UI.Controllers.Tabs
 {
     public class TabUIController : UIController
     {
