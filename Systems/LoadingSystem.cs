@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using ReiBrary.Coroutine;
 using ReiBrary.Enums;
 using ReiBrary.GameEvents;
 using ReiBrary.Helpers;
@@ -67,9 +66,9 @@ namespace ReiBrary.Systems
 
         public void QuitGame()
         {
-            StartCoroutine(CoroutineReiBrary.Sequence(
+            StartCoroutine(CoroutineHelper.Sequence(
                 UIHelper.FadeInAndEnable(_uiController, _loadingCanvasGroup, _fadeInDuration),
-                CoroutineReiBrary.CallAction(() => GameSystem.Instance.Quit()))
+                CoroutineHelper.CallAction(() => GameSystem.Instance.Quit()))
             );
         }
 
@@ -126,11 +125,11 @@ namespace ReiBrary.Systems
         /// <returns></returns>
         public IEnumerator LoadSceneCoroutine(string sceneName, bool manuallyEndLoading = false)
         {
-            return CoroutineReiBrary.Sequence(
+            return CoroutineHelper.Sequence(
                 SetLoading(true),
                 LoadingScreen(sceneName),
                 SetLoading(manuallyEndLoading),
-                CoroutineReiBrary.CallAction(() =>
+                CoroutineHelper.CallAction(() =>
                 {
                     Debug.Log("ON SCENE LOADED");
                     OnSceneLoadedEvent.Invoke();

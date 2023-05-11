@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using ReiBrary.Attributes;
-using ReiBrary.Coroutine;
 using ReiBrary.Enums;
+using ReiBrary.Helpers;
 using ReiBrary.Input;
 using ReiBrary.Systems;
 
@@ -139,7 +139,7 @@ namespace ReiBrary.UI.Controllers
             if (ActivePage == target || GetUI(ActivePage)?.IsTransitioning == true)
                 return;
 
-            StartCoroutine(CoroutineReiBrary.Sequence(
+            StartCoroutine(CoroutineHelper.Sequence(
                 DisableUICoroutine(ActivePage, resetCurrentOnSwitch),
                 EnableUICoroutine(target, resetTargetOnSwitch, transition)
                 ));
@@ -173,9 +173,9 @@ namespace ReiBrary.UI.Controllers
                 return;
 
             StartCoroutine(
-                CoroutineReiBrary.Sequence(
+                CoroutineHelper.Sequence(
                     DisableUICoroutine(target, resetCurrentOnSwitch),
-                    CoroutineReiBrary.CallAction(() => GetUI(ActivePage)?.SetActive()))
+                    CoroutineHelper.CallAction(() => GetUI(ActivePage)?.SetActive()))
             );
         }
 

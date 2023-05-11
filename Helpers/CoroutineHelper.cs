@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace ReiBrary.Coroutine
+namespace ReiBrary.Helpers
 {
-    public static class CoroutineUtil
+    public static class CoroutineHelper
     {
         public static IEnumerator Wait(float delay)
         {
