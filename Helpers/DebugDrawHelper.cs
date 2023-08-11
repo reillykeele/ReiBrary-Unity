@@ -3,6 +3,58 @@ using UnityEngine.AI;
 
 namespace ReiBrary.Helpers
 {
+    public class Box
+    {
+        public Vector3 localFrontTopLeft { get; private set; }
+        public Vector3 localFrontTopRight { get; private set; }
+        public Vector3 localFrontBottomLeft { get; private set; }
+        public Vector3 localFrontBottomRight { get; private set; }
+        public Vector3 localBackTopLeft { get { return -localFrontBottomRight; } }
+        public Vector3 localBackTopRight { get { return -localFrontBottomLeft; } }
+        public Vector3 localBackBottomLeft { get { return -localFrontTopRight; } }
+        public Vector3 localBackBottomRight { get { return -localFrontTopLeft; } }
+
+        public Vector3 frontTopLeft { get { return localFrontTopLeft + origin; } }
+        public Vector3 frontTopRight { get { return localFrontTopRight + origin; } }
+        public Vector3 frontBottomLeft { get { return localFrontBottomLeft + origin; } }
+        public Vector3 frontBottomRight { get { return localFrontBottomRight + origin; } }
+        public Vector3 backTopLeft { get { return localBackTopLeft + origin; } }
+        public Vector3 backTopRight { get { return localBackTopRight + origin; } }
+        public Vector3 backBottomLeft { get { return localBackBottomLeft + origin; } }
+        public Vector3 backBottomRight { get { return localBackBottomRight + origin; } }
+
+        public Vector3 origin { get; private set; }
+
+        public Box(Vector3 origin, Vector3 halfExtents, Quaternion orientation) : this(origin, halfExtents)
+        {
+            Rotate(orientation);
+        }
+        public Box(Vector3 origin, Vector3 halfExtents)
+        {
+            this.localFrontTopLeft     = new Vector3(-halfExtents.x, halfExtents.y, -halfExtents.z);
+            this.localFrontTopRight    = new Vector3(halfExtents.x, halfExtents.y, -halfExtents.z);
+            this.localFrontBottomLeft  = new Vector3(-halfExtents.x, -halfExtents.y, -halfExtents.z);
+            this.localFrontBottomRight = new Vector3(halfExtents.x, -halfExtents.y, -halfExtents.z);
+
+            this.origin = origin;
+        }
+
+
+        public void Rotate(Quaternion orientation)
+        {
+            localFrontTopLeft     = RotatePointAroundPivot(localFrontTopLeft, Vector3.zero, orientation);
+            localFrontTopRight    = RotatePointAroundPivot(localFrontTopRight, Vector3.zero, orientation);
+            localFrontBottomLeft  = RotatePointAroundPivot(localFrontBottomLeft, Vector3.zero, orientation);
+            localFrontBottomRight = RotatePointAroundPivot(localFrontBottomRight, Vector3.zero, orientation);
+        }
+
+        static Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Quaternion rotation)
+        {
+            var direction = point - pivot;
+            return pivot + rotation * direction;
+        }
+    }
+
     public static class DebugDrawHelper
     {
         #region Sphere
@@ -78,7 +130,7 @@ namespace ReiBrary.Helpers
 
         #endregion
 
-        #region DrawBoxCast
+        #region Box
         // By HiddenMonk source: http://answers.unity.com/answers/1156088/view.html 
 
         //Draws the full box from start of cast to its end distance. Can also pass in hitInfoDistance instead of full distance
@@ -123,64 +175,13 @@ namespace ReiBrary.Helpers
              Debug.DrawLine(box.frontBottomRight, box.backBottomRight, color);
              Debug.DrawLine(box.frontBottomLeft,     box.backBottomLeft, color);
          }
-         
-         public struct Box
-         {
-             public Vector3 localFrontTopLeft     {get; private set;}
-             public Vector3 localFrontTopRight    {get; private set;}
-             public Vector3 localFrontBottomLeft  {get; private set;}
-             public Vector3 localFrontBottomRight {get; private set;}
-             public Vector3 localBackTopLeft      {get {return -localFrontBottomRight;}}
-             public Vector3 localBackTopRight     {get {return -localFrontBottomLeft;}}
-             public Vector3 localBackBottomLeft   {get {return -localFrontTopRight;}}
-             public Vector3 localBackBottomRight  {get {return -localFrontTopLeft;}}
-     
-             public Vector3 frontTopLeft     {get {return localFrontTopLeft + origin;}}
-             public Vector3 frontTopRight    {get {return localFrontTopRight + origin;}}
-             public Vector3 frontBottomLeft  {get {return localFrontBottomLeft + origin;}}
-             public Vector3 frontBottomRight {get {return localFrontBottomRight + origin;}}
-             public Vector3 backTopLeft      {get {return localBackTopLeft + origin;}}
-             public Vector3 backTopRight     {get {return localBackTopRight + origin;}}
-             public Vector3 backBottomLeft   {get {return localBackBottomLeft + origin;}}
-             public Vector3 backBottomRight  {get {return localBackBottomRight + origin;}}
-     
-             public Vector3 origin {get; private set;}
-     
-             public Box(Vector3 origin, Vector3 halfExtents, Quaternion orientation) : this(origin, halfExtents)
-             {
-                 Rotate(orientation);
-             }
-             public Box(Vector3 origin, Vector3 halfExtents)
-             {
-                 this.localFrontTopLeft     = new Vector3(-halfExtents.x, halfExtents.y, -halfExtents.z);
-                 this.localFrontTopRight    = new Vector3(halfExtents.x, halfExtents.y, -halfExtents.z);
-                 this.localFrontBottomLeft  = new Vector3(-halfExtents.x, -halfExtents.y, -halfExtents.z);
-                 this.localFrontBottomRight = new Vector3(halfExtents.x, -halfExtents.y, -halfExtents.z);
-     
-                 this.origin = origin;
-             }
-     
-     
-             public void Rotate(Quaternion orientation)
-             {
-                 localFrontTopLeft     = RotatePointAroundPivot(localFrontTopLeft    , Vector3.zero, orientation);
-                 localFrontTopRight    = RotatePointAroundPivot(localFrontTopRight   , Vector3.zero, orientation);
-                 localFrontBottomLeft  = RotatePointAroundPivot(localFrontBottomLeft , Vector3.zero, orientation);
-                 localFrontBottomRight = RotatePointAroundPivot(localFrontBottomRight, Vector3.zero, orientation);
-             }
-         }
 
          //This should work for all cast types
          static Vector3 CastCenterOnCollision(Vector3 origin, Vector3 direction, float hitInfoDistance)
          {
              return origin + (direction.normalized * hitInfoDistance);
          }
-     
-         static Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Quaternion rotation)
-         {
-             Vector3 direction = point - pivot;
-             return pivot + rotation * direction;
-         }
+        
         #endregion
 
         #region NavMeshPath
@@ -191,6 +192,47 @@ namespace ReiBrary.Helpers
             for (int i = 1; i < path.corners.Length; i++)
                 Debug.DrawLine(path.corners[i-1], path.corners[i], color);
             #endif
+        }
+
+        #endregion
+    }
+
+    public static class GizmoDrawHelper
+    {
+        #region Sphere
+
+
+
+        #endregion
+
+        #region Box
+
+        public static void DrawBox(Vector3 origin, Vector3 halfExtents, Quaternion orientation, Color color)
+        {
+            DrawBox(new Box(origin, halfExtents, orientation), color);
+        }
+
+        public static void DrawBox(Box box, Color color)
+        {
+            Gizmos.color = color;
+
+            Gizmos.DrawLineList(new[]
+            {
+                box.frontTopLeft, box.frontTopRight,
+                box.frontTopRight, box.frontBottomRight,
+                box.frontBottomRight, box.frontBottomLeft,
+                box.frontBottomLeft, box.frontTopLeft,
+
+                box.backTopLeft, box.backTopRight,
+                box.backTopRight, box.backBottomRight,
+                box.backBottomRight, box.backBottomLeft,
+                box.backBottomLeft, box.backTopLeft,
+
+                box.frontTopLeft, box.backTopLeft,
+                box.frontTopRight, box.backTopRight,
+                box.frontBottomRight, box.backBottomRight,
+                box.frontBottomLeft, box.backBottomLeft,
+            });
         }
 
         #endregion

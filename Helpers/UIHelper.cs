@@ -64,5 +64,22 @@ namespace ReiBrary.Helpers
             uiController.gameObject.Disable();
             after?.Invoke();
         }
+
+        /// <summary>
+        /// ???
+        /// </summary>
+        /// <param name="worldPos"></param>
+        /// <param name="toTransform"></param>
+        /// <returns></returns>
+        public static Vector2 WorldToRectTransform(Vector3 worldPos, RectTransform toTransform)
+        {
+            var viewportPos = Camera.main.WorldToViewportPoint(worldPos);
+            var v = new Vector2(viewportPos.x, viewportPos.y) * Mathf.Sign(viewportPos.z);
+
+            var rectTransform = toTransform.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+            var v3 = Vector2.Scale(rectTransform.sizeDelta, v - Vector2.one * 0.5f);
+
+            return rectTransform.TransformPointTo(v3, toTransform);
+        }
     }
 }

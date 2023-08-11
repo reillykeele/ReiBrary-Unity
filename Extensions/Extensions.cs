@@ -144,12 +144,15 @@ namespace ReiBrary.Extensions
         #endregion
 
         #region Vector3
+        
+        public static Vector3 GetXZ(this Vector3 v) => new(v.x, 0, v.z);
+        public static Vector3 SetXZ(this Vector3 v, float x, float z) => new(x, v.y, z);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>A Vector3 of the vector's <c>x</c> and <c>z</c> values and a <c>y</c> of 0.</returns>
-        public static Vector3 GetHorizontal(this Vector3 v) => new Vector3(v.x, 0, v.z);
+        public static Vector3 SetX(this Vector3 v, float x) => new Vector3(x, v.y, v.z);
+        public static Vector3 SetY(this Vector3 v, float y) => new Vector3(v.x, y, v.z);
+        public static Vector3 SetZ(this Vector3 v, float z) => new Vector3(v.x, v.y, z);
+
+        public static Vector3 Abs(this Vector3 v) => new Vector3(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
 
         #endregion
 
@@ -195,6 +198,9 @@ namespace ReiBrary.Extensions
 
         public static Vector2 GetCentre(this RectTransform rt) =>
             rt.pivot * new Vector2(rt.rect.width, -rt.rect.height);
+
+        public static Vector3 TransformPointTo(this RectTransform from, Vector3 point, RectTransform to) =>
+            to.InverseTransformPoint(from.TransformPoint(point));
 
         #endregion
 
