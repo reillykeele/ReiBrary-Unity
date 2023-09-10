@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace ReiBrary.GameEvents
 {
-    [CreateAssetMenu(fileName = "StringGameEvent", menuName = "Game Event/String Game Event")]
+    [CreateAssetMenu(fileName = "StringGameEvent", menuName = "ReiBrary/Game Event/String Game Event")]
     public class StringGameEventSO : ScriptableObject
     {
         public UnityAction<string> OnEventRaised;

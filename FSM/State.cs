@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ReiBrary.FSM
 {
-    [CreateAssetMenu(fileName = "States", menuName = "State Machine/State List")]
+    [CreateAssetMenu(fileName = "States", menuName = "ReiBrary/State Machine/State List")]
     public class StateListSO : ScriptableObject
     {
         public List<StateSO> StateSOs;

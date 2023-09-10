@@ -4,7 +4,7 @@ using ReiBrary.Enums;
 
 namespace ReiBrary.Data
 {
-    [CreateAssetMenu(fileName = "CursorData", menuName = "Configuration/Cursor Data")]
+    [CreateAssetMenu(fileName = "CursorData", menuName = "ReiBrary/Configuration/Cursor Data")]
     public class CursorData : UnityEngine.ScriptableObject
     {
         public Texture2D CursorTexture2D;

@@ -2,7 +2,7 @@
 
 namespace ReiBrary.Audio
 {
-    [CreateAssetMenu(fileName = "Sound", menuName = "Audio/Sound")]
+    [CreateAssetMenu(fileName = "Sound", menuName = "ReiBrary/Audio/Sound")]
     public class AudioSoundSO : ScriptableObject
     {
         public AudioStreamSO AudioStream;

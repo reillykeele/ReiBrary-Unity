@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace ReiBrary.GameEvents
 {
-    [CreateAssetMenu(fileName = "FloatGameEvent", menuName = "Game Event/Float Game Event")]
+    [CreateAssetMenu(fileName = "FloatGameEvent", menuName = "ReiBrary/Game Event/Float Game Event")]
     public class FloatGameEventSO : ScriptableObject
     {
         public UnityAction<float> OnEventRaised;
