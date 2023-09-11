@@ -219,6 +219,20 @@ namespace ReiBrary.Extensions
 
         #endregion
 
+        #region Array
+
+        public static int GetWrappedIndex<T>(this T[] array, int index)
+        {
+            return (index % array.Length + array.Length) % array.Length; ;
+        }
+
+        public static T GetWrappedElement<T>(this T[] array, int index)
+        {
+            return array[array.GetWrappedIndex(index)];
+        }
+
+        #endregion
+
         #region IEnumerable
 
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
